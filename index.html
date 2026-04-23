@@ -18,6 +18,9 @@
 <meta name="twitter:description" content="Results-driven Sales Engineer with 6+ years across Pharma, Logistics & Cybersecurity. Let's connect.">
 <link rel="canonical" href="https://niyajsharif.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 :root{
@@ -45,7 +48,7 @@ body.light-mode{
   --hero-name-color:#0d1b3e;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden;max-width:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:hidden;max-width:100%;overscroll-behavior-y:none}
 body{
   font-family:'DM Sans',system-ui,sans-serif;
   background:var(--bg);color:var(--text);
@@ -55,6 +58,8 @@ body{
   line-height:1.6;
   max-width:100vw;
   width:100%;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-y;
 }
 .ft{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800}
 
@@ -237,6 +242,7 @@ nav.scrolled{
   background:conic-gradient(from 0deg,var(--accent),var(--accent2),var(--accent3),var(--accent));
   animation:spin 5s linear infinite;
   z-index:0;
+  will-change:transform;
 }
 /* Outer glow halo */
 .profile-glow-halo{
@@ -246,6 +252,7 @@ nav.scrolled{
   animation:spin 8s linear infinite reverse;
   z-index:-1;
   filter:blur(14px);
+  will-change:transform;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 .profile-img-wrap{
@@ -358,7 +365,7 @@ body.light-mode .theme-toggle-thumb{transform:translateX(18px)}
 /* ═══ DIVIDER ═══ */
 .divider{height:1px;background:linear-gradient(to right,transparent,rgba(255,255,255,0.06),transparent);margin:0 5vw}
 /* ═══ SECTIONS — COMMON ═══ */
-section{padding:6rem 5vw;width:100%;max-width:100%;overflow-x:hidden}
+section{padding:6rem 5vw;width:100%;max-width:100%;overflow-x:hidden;contain:layout style}
   font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;
   color:var(--accent);font-weight:700;margin-bottom:0.8rem;
   display:flex;align-items:center;gap:0.8rem;
@@ -514,20 +521,24 @@ section{padding:6rem 5vw;width:100%;max-width:100%;overflow-x:hidden}
   mask-image:linear-gradient(to right,transparent,black 8%,black 92%,transparent);
   -webkit-mask-image:linear-gradient(to right,transparent,black 8%,black 92%,transparent);
   max-width:100vw;
+  transform:translateZ(0);
+  contain:layout style;
 }
-.gallery-track{display:flex;gap:1.4rem;width:max-content}
+.gallery-track{display:flex;gap:1.4rem;width:max-content;will-change:transform}
 .gallery-track.ltr{animation:scrollLTR 38s linear infinite}
 .gallery-track.rtl{animation:scrollRTL 50s linear infinite}
 .gallery-track-wrap:hover .gallery-track{animation-play-state:paused}
-@keyframes scrollLTR{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@keyframes scrollRTL{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@keyframes scrollLTR{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@keyframes scrollRTL{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
 
 .gallery-card{
   flex:none;width:300px;border-radius:var(--r);overflow:visible;
   position:relative;cursor:pointer;
   transition:transform 0.35s ease,box-shadow 0.35s ease;
+  transform:translateZ(0);
+  backface-visibility:hidden;
 }
-.gallery-card:hover{transform:scale(1.04) translateY(-5px);box-shadow:0 28px 70px rgba(0,0,0,0.5)}
+.gallery-card:hover{transform:scale3d(1.04,1.04,1) translate3d(0,-5px,0);box-shadow:0 28px 70px rgba(0,0,0,0.5)}
 .gallery-card-inner{
   border-radius:var(--r);overflow:hidden;
   border:1px solid var(--border);background:var(--card);
@@ -559,46 +570,76 @@ section{padding:6rem 5vw;width:100%;max-width:100%;overflow-x:hidden}
 }
 .gallery-card:hover .gallery-expand-hint{opacity:1}
 
-/* Gallery Popup */
+/* Gallery Popup — FULL PHOTO VIEW */
 .gallery-popup-overlay{
   position:fixed;inset:0;z-index:2000;
-  background:rgba(4,8,18,0.88);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  background:rgba(2,4,12,0.96);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   display:flex;align-items:center;justify-content:center;
-  padding:1.5rem;
+  padding:1rem;
   opacity:0;visibility:hidden;
-  transition:opacity 0.35s ease,visibility 0.35s ease;
+  transition:opacity 0.3s ease,visibility 0.3s ease;
 }
 .gallery-popup-overlay.open{opacity:1;visibility:visible}
 .gallery-popup{
   background:var(--card);border:1px solid rgba(255,255,255,0.1);
   border-radius:var(--r-lg);overflow:hidden;
-  max-width:520px;width:100%;
-  transform:scale(0.88) translateY(20px);
+  max-width:min(860px,98vw);width:100%;
+  max-height:96vh;display:flex;flex-direction:column;
+  transform:scale(0.9) translateY(16px);
   transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
   position:relative;
 }
 .gallery-popup-overlay.open .gallery-popup{transform:scale(1) translateY(0)}
-.gallery-popup img{width:100%;height:240px;object-fit:cover;display:block}
-.gallery-popup-body{padding:1.8rem 2rem 2rem}
+/* FULL IMAGE — object-fit:contain so nothing is cropped */
+.gallery-popup-img-wrap{
+  width:100%;
+  background:#000;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  max-height:65vh;
+  overflow:hidden;
+}
+.gallery-popup-img-wrap img{
+  width:100%;
+  height:auto;
+  max-height:65vh;
+  object-fit:contain;
+  display:block;
+  transition:opacity 0.25s ease;
+}
+.gallery-popup-body{padding:1.4rem 1.8rem 1.8rem;overflow-y:auto}
 .gallery-popup-cat{
   font-size:0.65rem;font-weight:700;letter-spacing:0.18em;
   text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem;
 }
 .gallery-popup-title{
   font-family:'Bricolage Grotesque',system-ui,sans-serif;
-  font-weight:800;font-size:1.25rem;color:var(--text);margin-bottom:0.8rem;line-height:1.25;
+  font-weight:800;font-size:1.15rem;color:var(--text);margin-bottom:0.7rem;line-height:1.25;
 }
-.gallery-popup-desc{color:var(--muted);font-size:0.88rem;line-height:1.75}
+.gallery-popup-desc{color:var(--muted);font-size:0.86rem;line-height:1.75}
 .gallery-popup-close{
-  position:absolute;top:0.9rem;right:0.9rem;
-  width:34px;height:34px;border-radius:50%;
-  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.1);
+  position:absolute;top:0.8rem;right:0.8rem;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);
   display:flex;align-items:center;justify-content:center;
-  color:var(--text);font-size:0.85rem;cursor:pointer;
+  color:#fff;font-size:0.85rem;cursor:pointer;
   transition:background 0.2s,transform 0.25s;z-index:10;
 }
-.gallery-popup-close:hover{background:rgba(232,160,69,0.25);transform:rotate(90deg)}
+.gallery-popup-close:hover{background:rgba(232,160,69,0.3);transform:rotate(90deg)}
+/* Prev/Next arrows in lightbox */
+.gallery-popup-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.12);
+  color:#fff;font-size:0.85rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s,transform 0.2s;z-index:10;
+  top:calc(65vh / 2);
+}
+.gallery-popup-nav:hover{background:rgba(232,160,69,0.35);transform:translateY(-50%) scale(1.1)}
+.gallery-popup-prev{left:0.7rem}
+.gallery-popup-next{right:0.7rem}
 
 /* ═══ COMMUNICATION — NEW DESIGN ═══ */
 #skills{background:var(--surface)}
@@ -918,12 +959,12 @@ footer{
 .footer-copy{font-size:0.72rem;color:var(--muted);width:100%;text-align:center;padding-top:1.5rem;border-top:1px solid var(--border);margin-top:0.5rem}
 
 /* ═══ SCROLL ANIMATIONS ═══ */
-.fade-up{opacity:0;transform:translateY(36px);transition:opacity 0.75s ease,transform 0.75s ease}
-.fade-up.visible{opacity:1;transform:translateY(0)}
-.fade-left{opacity:0;transform:translateX(-36px);transition:opacity 0.75s ease,transform 0.75s ease}
-.fade-left.visible{opacity:1;transform:translateX(0)}
-.fade-right{opacity:0;transform:translateX(36px);transition:opacity 0.75s ease,transform 0.75s ease}
-.fade-right.visible{opacity:1;transform:translateX(0)}
+.fade-up{opacity:0;transform:translateY(36px);transition:opacity 0.75s ease,transform 0.75s ease;will-change:opacity,transform}
+.fade-up.visible{opacity:1;transform:translateY(0);will-change:auto}
+.fade-left{opacity:0;transform:translateX(-36px);transition:opacity 0.75s ease,transform 0.75s ease;will-change:opacity,transform}
+.fade-left.visible{opacity:1;transform:translateX(0);will-change:auto}
+.fade-right{opacity:0;transform:translateX(36px);transition:opacity 0.75s ease,transform 0.75s ease;will-change:opacity,transform}
+.fade-right.visible{opacity:1;transform:translateX(0);will-change:auto}
 .d1{transition-delay:0.1s}.d2{transition-delay:0.2s}
 .d3{transition-delay:0.3s}.d4{transition-delay:0.4s}
 
@@ -1141,6 +1182,7 @@ footer{
   display:flex;gap:2rem;
   transition:transform 0.65s cubic-bezier(0.22,1,0.36,1);
   will-change:transform;
+  backface-visibility:hidden;
 }
 .testi-stars{display:flex;gap:3px;margin-bottom:1.1rem}
 .testi-text{font-size:0.9rem;color:var(--text);line-height:1.8;font-style:italic;margin-bottom:1.5rem;position:relative;z-index:1}
@@ -1495,43 +1537,43 @@ footer{padding:3rem 5vw}
   <div class="gallery-track-wrap" style="margin-bottom:1.4rem">
     <div class="gallery-track ltr">
       <!-- 6 originals -->
-      <div class="gallery-card" data-cat="Event" data-title="National Sales Conference — Chennai, 2023" data-desc="Represented Cyber Heals at the national sales conference, presenting training programs to a 500+ audience of industry professionals. Networked with HR heads and C-level executives from 80+ organisations across South India."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp1.jpeg" alt="Sales Conference"><div class="gallery-caption"><div class="cat">Event</div><h4>National Sales Conference — Chennai, 2023</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Achievement" data-title="Top Performer Award — Capital Pharma" data-desc="Recognised as the top-performing sales representative in the Kerala region for three consecutive quarters. Achieved 140% of annual quota and built a network of 200+ doctors and medical professionals."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp2.jpeg" alt="Award"><div class="gallery-caption"><div class="cat">Achievement</div><h4>Top Performer Award — Capital Pharma</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Client Engagement" data-title="Key Account Partnership — Reliance Retail" data-desc="Secured and managed one of the largest FMCG distribution partnerships with Reliance Retail, overseeing monthly invoicing volumes of ₹40L+. Co-developed a streamlined procurement process that reduced delivery delays by 30%."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp3.jpeg" alt="Client meeting"><div class="gallery-caption"><div class="cat">Client Engagement</div><h4>Key Account Partnership — Reliance Retail</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="International" data-title="Industrial Safety Expo — Dubai, UAE" data-desc="Represented the company at the Gulf Safety Expo in Dubai, showcasing a full range of industrial PPE and engineered safety systems. Generated 18 qualified leads and closed 5 enterprise contracts during the 3-day event."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp4.jpeg" alt="Dubai expo"><div class="gallery-caption"><div class="cat">International</div><h4>Industrial Safety Expo — Dubai, UAE</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Leadership" data-title="Sales Team Building — Kerala Region" data-desc="Built and mentored a 6-person sales team for the Kerala pharma territory from scratch. Designed onboarding plans, daily reporting systems, and monthly review structures that improved team productivity by 55%."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp5.jpeg" alt="Team"><div class="gallery-caption"><div class="cat">Leadership</div><h4>Sales Team Building — Kerala Region</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Placement" data-title="Student Placement Drive — Cyber Heals 2024" data-desc="Orchestrated a pan-India placement drive connecting Cyber Heals students with 40+ IT and cybersecurity firms. Placed over 50 graduates in their first professional roles within 6 months, achieving a 92% placement rate."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp6.jpeg" alt="Cyber Heals"><div class="gallery-caption"><div class="cat">Placement</div><h4>Student Placement Drive — Cyber Heals 2024</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Event" data-title="National Sales Conference — Chennai, 2023" data-desc="Represented Cyber Heals at the national sales conference, presenting training programs to a 500+ audience of industry professionals. Networked with HR heads and C-level executives from 80+ organisations across South India."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp1.jpeg" alt="Sales Conference"><div class="gallery-caption"><div class="cat">Event</div><h4>National Sales Conference — Chennai, 2023</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Achievement" data-title="Top Performer Award — Capital Pharma" data-desc="Recognised as the top-performing sales representative in the Kerala region for three consecutive quarters. Achieved 140% of annual quota and built a network of 200+ doctors and medical professionals."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp2.jpeg" alt="Award"><div class="gallery-caption"><div class="cat">Achievement</div><h4>Top Performer Award — Capital Pharma</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Client Engagement" data-title="Key Account Partnership — Reliance Retail" data-desc="Secured and managed one of the largest FMCG distribution partnerships with Reliance Retail, overseeing monthly invoicing volumes of ₹40L+. Co-developed a streamlined procurement process that reduced delivery delays by 30%."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp3.jpeg" alt="Client meeting"><div class="gallery-caption"><div class="cat">Client Engagement</div><h4>Key Account Partnership — Reliance Retail</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="International" data-title="Industrial Safety Expo — Dubai, UAE" data-desc="Represented the company at the Gulf Safety Expo in Dubai, showcasing a full range of industrial PPE and engineered safety systems. Generated 18 qualified leads and closed 5 enterprise contracts during the 3-day event."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp4.jpeg" alt="Dubai expo"><div class="gallery-caption"><div class="cat">International</div><h4>Industrial Safety Expo — Dubai, UAE</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Leadership" data-title="Sales Team Building — Kerala Region" data-desc="Built and mentored a 6-person sales team for the Kerala pharma territory from scratch. Designed onboarding plans, daily reporting systems, and monthly review structures that improved team productivity by 55%."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp5.jpeg" alt="Team"><div class="gallery-caption"><div class="cat">Leadership</div><h4>Sales Team Building — Kerala Region</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Placement" data-title="Student Placement Drive — Cyber Heals 2024" data-desc="Orchestrated a pan-India placement drive connecting Cyber Heals students with 40+ IT and cybersecurity firms. Placed over 50 graduates in their first professional roles within 6 months, achieving a 92% placement rate."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp6.jpeg" alt="Cyber Heals"><div class="gallery-caption"><div class="cat">Placement</div><h4>Student Placement Drive — Cyber Heals 2024</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
       <!-- 6 duplicates for seamless loop -->
-      <div class="gallery-card" data-cat="Event" data-title="National Sales Conference — Chennai, 2023" data-desc="Represented Cyber Heals at the national sales conference, presenting training programs to a 500+ audience of industry professionals. Networked with HR heads and C-level executives from 80+ organisations across South India."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp8.jpeg" alt="Sales Conference"><div class="gallery-caption"><div class="cat">Event</div><h4>National Sales Conference — Chennai, 2023</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Achievement" data-title="Top Performer Award — Capital Pharma" data-desc="Recognised as the top-performing sales representative in the Kerala region for three consecutive quarters. Achieved 140% of annual quota and built a network of 200+ doctors and medical professionals."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp9.jpeg" alt="Award"><div class="gallery-caption"><div class="cat">Achievement</div><h4>Top Performer Award — Capital Pharma</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Client Engagement" data-title="Key Account Partnership — Reliance Retail" data-desc="Secured and managed one of the largest FMCG distribution partnerships with Reliance Retail, overseeing monthly invoicing volumes of ₹40L+. Co-developed a streamlined procurement process that reduced delivery delays by 30%."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp10.jpeg" alt="Client meeting"><div class="gallery-caption"><div class="cat">Client Engagement</div><h4>Key Account Partnership — Reliance Retail</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="International" data-title="Industrial Safety Expo — Dubai, UAE" data-desc="Represented the company at the Gulf Safety Expo in Dubai, showcasing a full range of industrial PPE and engineered safety systems. Generated 18 qualified leads and closed 5 enterprise contracts during the 3-day event."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/college_events/college_event1.jpeg" alt="Dubai expo"><div class="gallery-caption"><div class="cat">International</div><h4>Industrial Safety Expo — Dubai, UAE</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Leadership" data-title="Sales Team Building — Kerala Region" data-desc="Built and mentored a 6-person sales team for the Kerala pharma territory from scratch. Designed onboarding plans, daily reporting systems, and monthly review structures that improved team productivity by 55%."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/college_events/college_event2.jpeg" alt="Team"><div class="gallery-caption"><div class="cat">Leadership</div><h4>Sales Team Building — Kerala Region</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Leadership" data-title="Sales Team Building — Kerala Region" data-desc="Built and mentored a 6-person sales team for the Kerala pharma territory from scratch. Designed onboarding plans, daily reporting systems, and monthly review structures that improved team productivity by 55%."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/college_events/college_event3.jpeg" alt="Team"><div class="gallery-caption"><div class="cat">Leadership</div><h4>Sales Team Building — Kerala Region</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Leadership" data-title="Sales Team Building — Kerala Region" data-desc="Built and mentored a 6-person sales team for the Kerala pharma territory from scratch. Designed onboarding plans, daily reporting systems, and monthly review structures that improved team productivity by 55%."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/college_events/college_event4.jpeg" alt="Team"><div class="gallery-caption"><div class="cat">Leadership</div><h4>Sales Team Building — Kerala Region</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Placement" data-title="Student Placement Drive — Cyber Heals 2024" data-desc="Orchestrated a pan-India placement drive connecting Cyber Heals students with 40+ IT and cybersecurity firms. Placed over 50 graduates in their first professional roles within 6 months, achieving a 92% placement rate."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/college_events/college_event5.jpeg" alt="Cyber Heals"><div class="gallery-caption"><div class="cat">Placement</div><h4>Student Placement Drive — Cyber Heals 2024</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Event" data-title="National Sales Conference — Chennai, 2023" data-desc="Represented Cyber Heals at the national sales conference, presenting training programs to a 500+ audience of industry professionals. Networked with HR heads and C-level executives from 80+ organisations across South India."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp8.jpeg" alt="Sales Conference"><div class="gallery-caption"><div class="cat">Event</div><h4>National Sales Conference — Chennai, 2023</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Achievement" data-title="Top Performer Award — Capital Pharma" data-desc="Recognised as the top-performing sales representative in the Kerala region for three consecutive quarters. Achieved 140% of annual quota and built a network of 200+ doctors and medical professionals."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp9.jpeg" alt="Award"><div class="gallery-caption"><div class="cat">Achievement</div><h4>Top Performer Award — Capital Pharma</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Client Engagement" data-title="Key Account Partnership — Reliance Retail" data-desc="Secured and managed one of the largest FMCG distribution partnerships with Reliance Retail, overseeing monthly invoicing volumes of ₹40L+. Co-developed a streamlined procurement process that reduced delivery delays by 30%."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/camp_photos/camp10.jpeg" alt="Client meeting"><div class="gallery-caption"><div class="cat">Client Engagement</div><h4>Key Account Partnership — Reliance Retail</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="International" data-title="Industrial Safety Expo — Dubai, UAE" data-desc="Represented the company at the Gulf Safety Expo in Dubai, showcasing a full range of industrial PPE and engineered safety systems. Generated 18 qualified leads and closed 5 enterprise contracts during the 3-day event."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/college_events/college_event1.jpeg" alt="Dubai expo"><div class="gallery-caption"><div class="cat">International</div><h4>Industrial Safety Expo — Dubai, UAE</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Leadership" data-title="Sales Team Building — Kerala Region" data-desc="Built and mentored a 6-person sales team for the Kerala pharma territory from scratch. Designed onboarding plans, daily reporting systems, and monthly review structures that improved team productivity by 55%."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/college_events/college_event2.jpeg" alt="Team"><div class="gallery-caption"><div class="cat">Leadership</div><h4>Sales Team Building — Kerala Region</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Leadership" data-title="Sales Team Building — Kerala Region" data-desc="Built and mentored a 6-person sales team for the Kerala pharma territory from scratch. Designed onboarding plans, daily reporting systems, and monthly review structures that improved team productivity by 55%."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/college_events/college_event3.jpeg" alt="Team"><div class="gallery-caption"><div class="cat">Leadership</div><h4>Sales Team Building — Kerala Region</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Leadership" data-title="Sales Team Building — Kerala Region" data-desc="Built and mentored a 6-person sales team for the Kerala pharma territory from scratch. Designed onboarding plans, daily reporting systems, and monthly review structures that improved team productivity by 55%."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/college_events/college_event4.jpeg" alt="Team"><div class="gallery-caption"><div class="cat">Leadership</div><h4>Sales Team Building — Kerala Region</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Placement" data-title="Student Placement Drive — Cyber Heals 2024" data-desc="Orchestrated a pan-India placement drive connecting Cyber Heals students with 40+ IT and cybersecurity firms. Placed over 50 graduates in their first professional roles within 6 months, achieving a 92% placement rate."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/college_events/college_event5.jpeg" alt="Cyber Heals"><div class="gallery-caption"><div class="cat">Placement</div><h4>Student Placement Drive — Cyber Heals 2024</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
     </div>
   </div>
 
   <!-- ROW 2 — Right to Left -->
   <div class="gallery-track-wrap">
     <div class="gallery-track rtl">
-      <div class="gallery-card" data-cat="Training" data-title="Product Training Workshop — Nestlé TN" data-desc="Ran a 2-day distributor training workshop covering Nestlé's premium product range, pricing strategy, and merchandising guidelines. Over 120 frontline sales staff attended, improving sell-through rates by 22% in Q4."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/placement/placement1.jpeg" alt="Training"><div class="gallery-caption"><div class="cat">Training</div><h4>Product Training Workshop — Nestlé TN</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Community" data-title="Career Awareness Program — Cyber Heals" data-desc="Spoke at 12 engineering colleges across Tamil Nadu and Kerala on cybersecurity career paths. Personally counselled 300+ students and onboarded 85 into Cyber Heals certification programs."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/placement/placement2.jpeg" alt="Awareness"><div class="gallery-caption"><div class="cat">Community</div><h4>Career Awareness Program — Cyber Heals</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Recognition" data-title="Best Area Manager — Q3 2018" data-desc="Awarded Best Area Manager for Q3 2018 at Capital Pharma's annual review. Recognised for highest new account acquisition (38 new doctors onboarded), 135% target achievement, and zero attrition in team."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/placement/placement3.jpeg" alt="Recognition"><div class="gallery-caption"><div class="cat">Recognition</div><h4>Best Area Manager — Q3 2018</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Collaboration" data-title="Cross-Functional Meeting — UAE" data-desc="Led cross-functional coordination between the UAE procurement team and Indian HQ during a critical product launch. Aligned logistics, quality, and sales timelines, ensuring zero-delay delivery to 12 client sites."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/placement/placement4.jpeg" alt="Team"><div class="gallery-caption"><div class="cat">Collaboration</div><h4>Cross-Functional Meeting — UAE</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Strategy" data-title="Annual Sales Planning — Chennai HQ" data-desc="Co-designed the FY 2023–24 sales plan for the South India division, setting territory-wise revenue targets, account prioritisation frameworks, and quarterly milestones. Plan exceeded projections by 18%."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/placement/placement5.jpeg" alt="Strategy"><div class="gallery-caption"><div class="cat">Strategy</div><h4>Annual Sales Planning — Chennai HQ</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Networking" data-title="B2B Industry Meet 2022" data-desc="Attended CII's South India Industry Connect event, representing three brand partners. Established 22 new B2B contacts, resulting in 7 formal partnership discussions and 3 signed distribution agreements."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/Cybersec_2024/cybersec2024_1.jpeg" alt="Networking"><div class="gallery-caption"><div class="cat">Networking</div><h4>B2B Industry Meet 2022</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Training" data-title="Product Training Workshop — Nestlé TN" data-desc="Ran a 2-day distributor training workshop covering Nestlé's premium product range, pricing strategy, and merchandising guidelines. Over 120 frontline sales staff attended, improving sell-through rates by 22% in Q4."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/placement/placement1.jpeg" alt="Training"><div class="gallery-caption"><div class="cat">Training</div><h4>Product Training Workshop — Nestlé TN</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Community" data-title="Career Awareness Program — Cyber Heals" data-desc="Spoke at 12 engineering colleges across Tamil Nadu and Kerala on cybersecurity career paths. Personally counselled 300+ students and onboarded 85 into Cyber Heals certification programs."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/placement/placement2.jpeg" alt="Awareness"><div class="gallery-caption"><div class="cat">Community</div><h4>Career Awareness Program — Cyber Heals</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Recognition" data-title="Best Area Manager — Q3 2018" data-desc="Awarded Best Area Manager for Q3 2018 at Capital Pharma's annual review. Recognised for highest new account acquisition (38 new doctors onboarded), 135% target achievement, and zero attrition in team."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/placement/placement3.jpeg" alt="Recognition"><div class="gallery-caption"><div class="cat">Recognition</div><h4>Best Area Manager — Q3 2018</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Collaboration" data-title="Cross-Functional Meeting — UAE" data-desc="Led cross-functional coordination between the UAE procurement team and Indian HQ during a critical product launch. Aligned logistics, quality, and sales timelines, ensuring zero-delay delivery to 12 client sites."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/placement/placement4.jpeg" alt="Team"><div class="gallery-caption"><div class="cat">Collaboration</div><h4>Cross-Functional Meeting — UAE</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Strategy" data-title="Annual Sales Planning — Chennai HQ" data-desc="Co-designed the FY 2023–24 sales plan for the South India division, setting territory-wise revenue targets, account prioritisation frameworks, and quarterly milestones. Plan exceeded projections by 18%."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/placement/placement5.jpeg" alt="Strategy"><div class="gallery-caption"><div class="cat">Strategy</div><h4>Annual Sales Planning — Chennai HQ</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Networking" data-title="B2B Industry Meet 2022" data-desc="Attended CII's South India Industry Connect event, representing three brand partners. Established 22 new B2B contacts, resulting in 7 formal partnership discussions and 3 signed distribution agreements."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/Cybersec_2024/cybersec2024_1.jpeg" alt="Networking"><div class="gallery-caption"><div class="cat">Networking</div><h4>B2B Industry Meet 2022</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
       <!-- duplicates -->
-      <div class="gallery-card" data-cat="Training" data-title="Product Training Workshop — Nestlé TN" data-desc="Ran a 2-day distributor training workshop covering Nestlé's premium product range, pricing strategy, and merchandising guidelines. Over 120 frontline sales staff attended, improving sell-through rates by 22% in Q4."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/Cybersec_2024/cybersec2024_2.jpeg" alt="Training"><div class="gallery-caption"><div class="cat">Training</div><h4>Product Training Workshop — Nestlé TN</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Community" data-title="Career Awareness Program — Cyber Heals" data-desc="Spoke at 12 engineering colleges across Tamil Nadu and Kerala on cybersecurity career paths. Personally counselled 300+ students and onboarded 85 into Cyber Heals certification programs."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/Cybersec_2024/cybersec2024_3.jpeg" alt="Awareness"><div class="gallery-caption"><div class="cat">Community</div><h4>Career Awareness Program — Cyber Heals</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Recognition" data-title="Best Area Manager — Q3 2018" data-desc="Awarded Best Area Manager for Q3 2018 at Capital Pharma's annual review. Recognised for highest new account acquisition (38 new doctors onboarded), 135% target achievement, and zero attrition in team."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/Cybersec_2024/cybersec2024_4.jpeg" alt="Recognition"><div class="gallery-caption"><div class="cat">Recognition</div><h4>Best Area Manager — Q3 2018</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Collaboration" data-title="Cross-Functional Meeting — UAE" data-desc="Led cross-functional coordination between the UAE procurement team and Indian HQ during a critical product launch. Aligned logistics, quality, and sales timelines, ensuring zero-delay delivery to 12 client sites."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/Cybersec_2024/cybersec2024_5.jpeg" alt="Team"><div class="gallery-caption"><div class="cat">Collaboration</div><h4>Cross-Functional Meeting — UAE</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Strategy" data-title="Annual Sales Planning — Chennai HQ" data-desc="Co-designed the FY 2023–24 sales plan for the South India division, setting territory-wise revenue targets, account prioritisation frameworks, and quarterly milestones. Plan exceeded projections by 18%."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/Cybersec_2024/cybersec2024_6.jpeg" alt="Strategy"><div class="gallery-caption"><div class="cat">Strategy</div><h4>Annual Sales Planning — Chennai HQ</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Strategy" data-title="Annual Sales Planning — Chennai HQ" data-desc="Co-designed the FY 2023–24 sales plan for the South India division, setting territory-wise revenue targets, account prioritisation frameworks, and quarterly milestones. Plan exceeded projections by 18%."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/UPTM/UPTM1.jpeg" alt="Strategy"><div class="gallery-caption"><div class="cat">Strategy</div><h4>Annual Sales Planning — Chennai HQ</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Strategy" data-title="Annual Sales Planning — Chennai HQ" data-desc="Co-designed the FY 2023–24 sales plan for the South India division, setting territory-wise revenue targets, account prioritisation frameworks, and quarterly milestones. Plan exceeded projections by 18%."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/UPTM/UPTM2.jpeg" alt="Strategy"><div class="gallery-caption"><div class="cat">Strategy</div><h4>Annual Sales Planning — Chennai HQ</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Strategy" data-title="Annual Sales Planning — Chennai HQ" data-desc="Co-designed the FY 2023–24 sales plan for the South India division, setting territory-wise revenue targets, account prioritisation frameworks, and quarterly milestones. Plan exceeded projections by 18%."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/UPTM/UPTM3.jpeg" alt="Strategy"><div class="gallery-caption"><div class="cat">Strategy</div><h4>Annual Sales Planning — Chennai HQ</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
-      <div class="gallery-card" data-cat="Networking" data-title="B2B Industry Meet 2022" data-desc="Attended CII's South India Industry Connect event, representing three brand partners. Established 22 new B2B contacts, resulting in 7 formal partnership discussions and 3 signed distribution agreements."><div class="gallery-card-inner"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/UPTM/UPTM4.jpeg" alt="Networking"><div class="gallery-caption"><div class="cat">Networking</div><h4>B2B Industry Meet 2022</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Training" data-title="Product Training Workshop — Nestlé TN" data-desc="Ran a 2-day distributor training workshop covering Nestlé's premium product range, pricing strategy, and merchandising guidelines. Over 120 frontline sales staff attended, improving sell-through rates by 22% in Q4."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/Cybersec_2024/cybersec2024_2.jpeg" alt="Training"><div class="gallery-caption"><div class="cat">Training</div><h4>Product Training Workshop — Nestlé TN</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Community" data-title="Career Awareness Program — Cyber Heals" data-desc="Spoke at 12 engineering colleges across Tamil Nadu and Kerala on cybersecurity career paths. Personally counselled 300+ students and onboarded 85 into Cyber Heals certification programs."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/Cybersec_2024/cybersec2024_3.jpeg" alt="Awareness"><div class="gallery-caption"><div class="cat">Community</div><h4>Career Awareness Program — Cyber Heals</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Recognition" data-title="Best Area Manager — Q3 2018" data-desc="Awarded Best Area Manager for Q3 2018 at Capital Pharma's annual review. Recognised for highest new account acquisition (38 new doctors onboarded), 135% target achievement, and zero attrition in team."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/Cybersec_2024/cybersec2024_4.jpeg" alt="Recognition"><div class="gallery-caption"><div class="cat">Recognition</div><h4>Best Area Manager — Q3 2018</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Collaboration" data-title="Cross-Functional Meeting — UAE" data-desc="Led cross-functional coordination between the UAE procurement team and Indian HQ during a critical product launch. Aligned logistics, quality, and sales timelines, ensuring zero-delay delivery to 12 client sites."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/Cybersec_2024/cybersec2024_5.jpeg" alt="Team"><div class="gallery-caption"><div class="cat">Collaboration</div><h4>Cross-Functional Meeting — UAE</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Strategy" data-title="Annual Sales Planning — Chennai HQ" data-desc="Co-designed the FY 2023–24 sales plan for the South India division, setting territory-wise revenue targets, account prioritisation frameworks, and quarterly milestones. Plan exceeded projections by 18%."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/Cybersec_2024/cybersec2024_6.jpeg" alt="Strategy"><div class="gallery-caption"><div class="cat">Strategy</div><h4>Annual Sales Planning — Chennai HQ</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Strategy" data-title="Annual Sales Planning — Chennai HQ" data-desc="Co-designed the FY 2023–24 sales plan for the South India division, setting territory-wise revenue targets, account prioritisation frameworks, and quarterly milestones. Plan exceeded projections by 18%."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/UPTM/UPTM1.jpeg" alt="Strategy"><div class="gallery-caption"><div class="cat">Strategy</div><h4>Annual Sales Planning — Chennai HQ</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Strategy" data-title="Annual Sales Planning — Chennai HQ" data-desc="Co-designed the FY 2023–24 sales plan for the South India division, setting territory-wise revenue targets, account prioritisation frameworks, and quarterly milestones. Plan exceeded projections by 18%."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/UPTM/UPTM2.jpeg" alt="Strategy"><div class="gallery-caption"><div class="cat">Strategy</div><h4>Annual Sales Planning — Chennai HQ</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Strategy" data-title="Annual Sales Planning — Chennai HQ" data-desc="Co-designed the FY 2023–24 sales plan for the South India division, setting territory-wise revenue targets, account prioritisation frameworks, and quarterly milestones. Plan exceeded projections by 18%."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/UPTM/UPTM3.jpeg" alt="Strategy"><div class="gallery-caption"><div class="cat">Strategy</div><h4>Annual Sales Planning — Chennai HQ</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
+      <div class="gallery-card" data-cat="Networking" data-title="B2B Industry Meet 2022" data-desc="Attended CII's South India Industry Connect event, representing three brand partners. Established 22 new B2B contacts, resulting in 7 formal partnership discussions and 3 signed distribution agreements."><div class="gallery-card-inner"><img loading="lazy" decoding="async" src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/Malaysia/UPTM/UPTM4.jpeg" alt="Networking"><div class="gallery-caption"><div class="cat">Networking</div><h4>B2B Industry Meet 2022</h4></div></div><div class="gallery-expand-hint"><i class="fas fa-expand-alt"></i></div></div>
     </div>
   </div>
 </section>
@@ -1540,7 +1582,11 @@ footer{padding:3rem 5vw}
 <div class="gallery-popup-overlay" id="galleryPopup">
   <div class="gallery-popup">
     <button class="gallery-popup-close" id="popupClose" aria-label="Close"><i class="fas fa-times"></i></button>
-    <img src="" alt="" id="popupImg">
+    <button class="gallery-popup-nav gallery-popup-prev" id="popupPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+    <button class="gallery-popup-nav gallery-popup-next" id="popupNext" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+    <div class="gallery-popup-img-wrap">
+      <img src="" alt="" id="popupImg">
+    </div>
     <div class="gallery-popup-body">
       <div class="gallery-popup-cat" id="popupCat"></div>
       <div class="gallery-popup-title" id="popupTitle"></div>
@@ -1814,7 +1860,16 @@ footer{padding:3rem 5vw}
 <script>
 /* ── NAVBAR ── */
 const nav=document.getElementById('navbar');
-window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60),{passive:true});
+let navTicking=false;
+window.addEventListener('scroll',()=>{
+  if(!navTicking){
+    requestAnimationFrame(()=>{
+      nav.classList.toggle('scrolled',window.scrollY>60);
+      navTicking=false;
+    });
+    navTicking=true;
+  }
+},{passive:true});
 
 /* ── HAMBURGER ── */
 document.getElementById('hamburger').addEventListener('click',()=>{
@@ -1866,18 +1921,33 @@ themeToggle.addEventListener('click',()=>{
   });
 })();
 
-/* ── ACTIVE NAV HIGHLIGHT ── */
+/* ── ACTIVE NAV HIGHLIGHT + STICKY CTA — RAF batched ── */
 const navLinks=document.querySelectorAll('.nav-links a:not(.nav-cta)');
 const sections=[...document.querySelectorAll('section[id]')];
-function setActiveNav(){
-  const y=window.scrollY+120;
-  let active='';
-  sections.forEach(s=>{if(s.offsetTop<=y)active=s.id});
-  navLinks.forEach(a=>{
-    a.classList.toggle('nav-active',a.getAttribute('href')==='#'+active);
+const stickyCta=document.getElementById('stickyCta');
+let scrollTicking=false;
+let ctaShown=false;
+
+function onScroll(){
+  if(scrollTicking)return;
+  scrollTicking=true;
+  requestAnimationFrame(()=>{
+    const y=window.scrollY+120;
+    let active='';
+    sections.forEach(s=>{if(s.offsetTop<=y)active=s.id});
+    navLinks.forEach(a=>{
+      a.classList.toggle('nav-active',a.getAttribute('href')==='#'+active);
+    });
+    const show=window.scrollY>400;
+    if(show!==ctaShown){
+      ctaShown=show;
+      stickyCta.classList.toggle('sticky-cta-hide',!show);
+    }
+    scrollTicking=false;
   });
 }
-window.addEventListener('scroll',setActiveNav,{passive:true});
+window.addEventListener('scroll',onScroll,{passive:true});
+stickyCta.classList.add('sticky-cta-hide');
 
 /* ── SCROLL REVEAL ── */
 const revObs=new IntersectionObserver(entries=>{
@@ -1898,23 +1968,59 @@ const spObs=new IntersectionObserver(entries=>{
 },{threshold:0.15,rootMargin:'0px 0px -60px 0px'});
 document.querySelectorAll('.social-proof-item').forEach(el=>spObs.observe(el));
 
-/* ── GALLERY POPUP ── */
-const overlay=document.getElementById('galleryPopup');
-document.querySelectorAll('.gallery-card').forEach(card=>{
-  card.addEventListener('click',()=>{
-    document.getElementById('popupImg').src=card.querySelector('img').src;
-    document.getElementById('popupImg').alt=card.querySelector('img').alt||'';
-    document.getElementById('popupCat').textContent=card.dataset.cat||'';
-    document.getElementById('popupTitle').textContent=card.dataset.title||'';
-    document.getElementById('popupDesc').textContent=card.dataset.desc||'';
+/* ── GALLERY POPUP — FULL PHOTO + NAVIGATION ── */
+(function(){
+  const overlay=document.getElementById('galleryPopup');
+  const popupImg=document.getElementById('popupImg');
+  const popupCat=document.getElementById('popupCat');
+  const popupTitle=document.getElementById('popupTitle');
+  const popupDesc=document.getElementById('popupDesc');
+
+  // Collect unique cards (ignore duplicates by tracking by img src)
+  const allCards=[...document.querySelectorAll('.gallery-card')];
+  let currentIdx=0;
+
+  function openPopup(idx){
+    currentIdx=idx;
+    const card=allCards[idx];
+    const img=card.querySelector('img');
+    popupImg.style.opacity='0';
+    popupImg.src=img.src;
+    popupImg.alt=img.alt||'';
+    popupCat.textContent=card.dataset.cat||'';
+    popupTitle.textContent=card.dataset.title||'';
+    popupDesc.textContent=card.dataset.desc||'';
+    popupImg.onload=()=>{popupImg.style.opacity='1'};
     overlay.classList.add('open');
     document.body.style.overflow='hidden';
+  }
+
+  allCards.forEach((card,i)=>{
+    card.addEventListener('click',()=>openPopup(i));
   });
-});
-function closePopup(){overlay.classList.remove('open');document.body.style.overflow=''}
-document.getElementById('popupClose').addEventListener('click',closePopup);
-overlay.addEventListener('click',e=>{if(e.target===overlay)closePopup()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closePopup()});
+
+  function closePopup(){overlay.classList.remove('open');document.body.style.overflow=''}
+  function prevPhoto(){openPopup((currentIdx-1+allCards.length)%allCards.length)}
+  function nextPhoto(){openPopup((currentIdx+1)%allCards.length)}
+
+  document.getElementById('popupClose').addEventListener('click',closePopup);
+  document.getElementById('popupPrev').addEventListener('click',e=>{e.stopPropagation();prevPhoto()});
+  document.getElementById('popupNext').addEventListener('click',e=>{e.stopPropagation();nextPhoto()});
+  overlay.addEventListener('click',e=>{if(e.target===overlay)closePopup()});
+  document.addEventListener('keydown',e=>{
+    if(!overlay.classList.contains('open'))return;
+    if(e.key==='Escape')closePopup();
+    if(e.key==='ArrowLeft')prevPhoto();
+    if(e.key==='ArrowRight')nextPhoto();
+  });
+  // Touch swipe in popup
+  let swipeX=0;
+  overlay.addEventListener('touchstart',e=>{swipeX=e.touches[0].clientX},{passive:true});
+  overlay.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-swipeX;
+    if(Math.abs(dx)>50){dx<0?nextPhoto():prevPhoto()}
+  },{passive:true});
+})();
 
 /* ── TESTIMONIALS — AUTO CAROUSEL + READING TIMER ── */
 (function(){
@@ -2003,16 +2109,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closePopup()});
   },800);
 })();
 
-/* ── STICKY CTA ── */
-(function(){
-  const cta=document.getElementById('stickyCta');
-  let shown=false;
-  window.addEventListener('scroll',()=>{
-    const show=window.scrollY>400;
-    if(show!==shown){shown=show;cta.classList.toggle('sticky-cta-hide',!show)}
-  },{passive:true});
-  cta.classList.add('sticky-cta-hide');
-})();
+/* ── STICKY CTA — handled above in unified scroll handler ── */
 
 /* ── FORMSPREE ── */
 document.getElementById('contactForm').addEventListener('submit',async function(e){
