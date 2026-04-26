@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://niyaj-sales.github.io/portfolio/sitemap.xml
