@@ -3,20 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Niyaj Sharif | Sales Engineer & Area Sales Manager – Chennai, India</title>
-<meta name="description" content="Niyaj Sharif is a results-driven Sales Engineer and Area Sales Manager with 6+ years of experience across Pharma, Logistics, Cybersecurity, and FMCG in India, Malaysia and UAE. Open to senior sales leadership roles.">
-<meta name="keywords" content="Sales Engineer India, Area Sales Manager Chennai, Pharma Sales Manager, B2B Sales Expert, Cybersecurity Sales, Logistics Sales, Sales Leader Tamil Nadu, Niyaj Sharif">
+<title>Niyaj Sharif | Sales Executive & Area Sales Manager – Chennai, India</title>
+<meta name="description" content="Niyaj Sharif is a results-driven Sales Executive and Area Sales Manager with 6+ years of experience across Pharma, Logistics, Cybersecurity, and FMCG in India, Malaysia and UAE. Open to senior sales leadership roles.">
+<meta name="keywords" content="Niyaj Sharif, Niyaj sales executive, Niyaj Sharif sales executive, Niyaj Sharif marketing, Niyaj Sharif sales manager, Niyaj Sharif area sales manager, Niyaj Sharif Chennai, Niyaj Sharif portfolio, Sales Engineer India, Area Sales Manager Chennai, Pharma Sales Manager, B2B Sales Expert, Cybersecurity Sales, Logistics Sales, Sales Leader Tamil Nadu, FMCG Sales India, Niyaj Sharif sales engineer, Niyaj sales manager India">
 <meta name="author" content="Niyaj Sharif">
 <meta name="robots" content="index, follow">
-<meta property="og:title" content="Niyaj Sharif | Sales Engineer & Area Sales Manager – India">
+
+<!-- ── Favicon / Logo ── -->
+<link rel="icon" type="image/png" href="https://niyaj-sales.github.io/portfolio/Niyaj_logo.png">
+<link rel="apple-touch-icon" href="https://niyaj-sales.github.io/portfolio/Niyaj_logo.png">
+
+<!-- ── Open Graph (Facebook / LinkedIn / WhatsApp preview) ── -->
+<meta property="og:title" content="Niyaj Sharif | Sales Executive & Area Sales Manager – India">
 <meta property="og:description" content="6+ years across Pharma, Logistics, Cybersecurity & FMCG. Proven revenue growth, multilingual sales leader based in Chennai, India.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://niyajsharif.com">
-<meta property="og:image" content="https://raw.githubusercontent.com/niyajsharif/portfolio/main/profile-pic.jpg">
+<meta property="og:url" content="https://niyaj-sales.github.io/portfolio/">
+<meta property="og:image" content="https://niyaj-sales.github.io/portfolio/Niyaj_logo.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Niyaj Sharif – Sales Executive Portfolio">
+<meta property="og:locale" content="en_IN">
+
+<!-- ── Twitter Card ── -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Niyaj Sharif | Sales Engineer – Chennai, India">
-<meta name="twitter:description" content="Results-driven Sales Engineer with 6+ years across Pharma, Logistics & Cybersecurity. Let's connect.">
-<link rel="canonical" href="https://niyajsharif.com">
+<meta name="twitter:title" content="Niyaj Sharif | Sales Executive – Chennai, India">
+<meta name="twitter:description" content="Results-driven Sales Executive with 6+ years across Pharma, Logistics & Cybersecurity. Let's connect.">
+<meta name="twitter:image" content="https://niyaj-sales.github.io/portfolio/Niyaj_logo.png">
+
+<!-- ── Canonical URL ── -->
+<link rel="canonical" href="https://niyaj-sales.github.io/portfolio/">
+
+<!-- ── JSON-LD Structured Data (Google Rich Results & Knowledge Panel) ── -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Niyaj Sharif",
+  "alternateName": ["Niyaj", "Niyaj Sales Executive", "Niyaj Sharif Sales Executive"],
+  "url": "https://niyaj-sales.github.io/portfolio/",
+  "image": "https://niyaj-sales.github.io/portfolio/Niyaj_logo.png",
+  "jobTitle": ["Sales Executive", "Area Sales Manager", "Sales Engineer"],
+  "description": "Niyaj Sharif is a results-driven Sales Executive and Area Sales Manager with 6+ years of experience in Pharma, Logistics, Cybersecurity, and FMCG across India, Malaysia, and UAE.",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Open to Opportunities"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Chennai",
+    "addressRegion": "Tamil Nadu",
+    "addressCountry": "IN"
+  },
+  "sameAs": [
+    "https://niyaj-sales.github.io/portfolio/"
+  ],
+  "knowsAbout": [
+    "Sales Management",
+    "Marketing",
+    "Pharma Sales",
+    "B2B Sales",
+    "Cybersecurity Sales",
+    "Logistics Sales",
+    "FMCG Sales",
+    "Area Sales Management"
+  ]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
@@ -115,15 +167,33 @@ nav.scrolled{
 .mobile-nav{
   display:none;position:fixed;inset:0;
   background:rgba(6,10,18,0.98);backdrop-filter:blur(24px);
-  z-index:899;flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+  z-index:899;flex-direction:column;align-items:center;justify-content:flex-start;
+  gap:0;overflow-y:auto;overflow-x:hidden;
+  padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);
 }
 .mobile-nav.open{display:flex}
+.mobile-nav-inner{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:0.35rem;
+  min-height:100%;width:100%;
+  padding:5rem 2rem 4rem;
+}
 .mobile-nav a{
   font-family:'Bricolage Grotesque',system-ui,sans-serif;
-  font-size:2.5rem;font-weight:800;color:var(--text);
-  text-decoration:none;transition:color 0.3s;
+  font-size:clamp(1.6rem,7vw,2.5rem);font-weight:800;
+  color:var(--text);text-decoration:none;
+  letter-spacing:-0.03em;line-height:1.25;
+  padding:0.55rem 1.8rem;border-radius:14px;
+  transition:color 0.25s,background 0.25s,transform 0.2s;
+  width:100%;text-align:center;
+  border-left:3px solid transparent;
 }
-.mobile-nav a:hover{color:var(--accent)}
+.mobile-nav a:hover,.mobile-nav a:active{
+  color:var(--accent);
+  background:rgba(232,160,69,0.08);
+  border-left-color:var(--accent);
+  transform:translateX(6px);
+}
 
 /* ═══ HERO ═══ */
 .hero{
@@ -1544,14 +1614,16 @@ footer{padding:3rem 5vw}
   </div>
 </nav>
 <div class="mobile-nav" id="mobileNav">
-  <a href="#about" onclick="closeMobile()">About</a>
-  <a href="#experience" onclick="closeMobile()">Experience</a>
-  <a href="#gallery" onclick="closeMobile()">Gallery</a>
-  <a href="#skills" onclick="closeMobile()">Skills</a>
-  <a href="#industries" onclick="closeMobile()">Industries</a>
-  <a href="#achievements" onclick="closeMobile()">Wins</a>
-  <a href="#testimonials" onclick="closeMobile()">Testimonials</a>
-  <a href="#contact" onclick="closeMobile()">Contact</a>
+  <div class="mobile-nav-inner">
+    <a href="#about" onclick="closeMobile()">About</a>
+    <a href="#experience" onclick="closeMobile()">Experience</a>
+    <a href="#gallery" onclick="closeMobile()">Gallery</a>
+    <a href="#skills" onclick="closeMobile()">Skills</a>
+    <a href="#industries" onclick="closeMobile()">Industries</a>
+    <a href="#achievements" onclick="closeMobile()">Wins</a>
+    <a href="#testimonials" onclick="closeMobile()">Testimonials</a>
+    <a href="#contact" onclick="closeMobile()">Contact</a>
+  </div>
 </div>
 
 <!-- ════ HERO ════ -->
