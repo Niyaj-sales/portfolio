@@ -1272,6 +1272,254 @@ footer{
 .d1{transition-delay:0.1s}.d2{transition-delay:0.2s}
 .d3{transition-delay:0.3s}.d4{transition-delay:0.4s}
 
+/* ═══ CERTIFICATION SLIDER ═══ */
+.cert-slider-section{
+  padding:5rem 0;
+  width:100%;max-width:100%;overflow:hidden;
+  background:linear-gradient(180deg,var(--bg) 0%,rgba(61,127,255,0.03) 50%,var(--bg) 100%);
+  position:relative;
+}
+.cert-slider-section::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(232,160,69,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(232,160,69,0.025) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 30%,transparent 100%);
+}
+.cert-slider-header{
+  text-align:center;padding:0 5vw;margin-bottom:2.8rem;position:relative;z-index:2;
+}
+.cert-track-outer{
+  position:relative;overflow:hidden;
+}
+.cert-track-outer::before,
+.cert-track-outer::after{
+  content:'';position:absolute;top:0;bottom:0;width:120px;z-index:10;pointer-events:none;
+}
+.cert-track-outer::before{
+  left:0;background:linear-gradient(to right,var(--bg),transparent);
+}
+.cert-track-outer::after{
+  right:0;background:linear-gradient(to left,var(--bg),transparent);
+}
+.cert-track{
+  display:flex;gap:1.6rem;
+  width:max-content;
+  animation:cert-scroll 40s linear infinite;
+  will-change:transform;
+  padding:1rem 0 1.5rem;
+}
+.cert-track:hover{animation-play-state:paused}
+@keyframes cert-scroll{
+  0%  {transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+
+/* ── CARD ── */
+.cert-card{
+  flex-shrink:0;
+  width:300px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  overflow:hidden;
+  position:relative;
+  cursor:pointer;
+  transition:border-color 0.35s,transform 0.4s cubic-bezier(0.34,1.45,0.64,1),box-shadow 0.35s;
+}
+.cert-card:hover{
+  border-color:rgba(232,160,69,0.5);
+  transform:translateY(-10px) scale(1.03);
+  box-shadow:0 28px 70px rgba(0,0,0,0.55),0 0 0 1px rgba(232,160,69,0.18);
+}
+/* Click-to-open hint icon overlay */
+.cert-card .cert-zoom-hint{
+  position:absolute;top:10px;right:10px;z-index:4;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(6,10,18,0.72);backdrop-filter:blur(6px);
+  border:1px solid rgba(232,160,69,0.35);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--accent);font-size:0.7rem;
+  opacity:0;transform:scale(0.7);
+  transition:opacity 0.25s,transform 0.3s cubic-bezier(0.34,1.45,0.64,1);
+  pointer-events:none;
+}
+.cert-card:hover .cert-zoom-hint{
+  opacity:1;transform:scale(1);
+}
+
+/* Full certificate image */
+.cert-img-wrap{
+  width:100%;
+  aspect-ratio:16/11;
+  overflow:hidden;
+  background:#0a1220;
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.cert-img-wrap img{
+  width:100%;height:100%;
+  object-fit:contain;
+  display:block;
+  padding:6px;
+  transition:transform 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+.cert-card:hover .cert-img-wrap img{transform:scale(1.05)}
+
+/* Caption strip — enhanced */
+.cert-body{
+  padding:0.8rem 1.1rem 0.9rem;
+  border-top:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(232,160,69,0.04),transparent);
+}
+.cert-name{
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;
+  font-size:0.82rem;font-weight:700;color:var(--text);
+  line-height:1.35;margin-bottom:0.45rem;
+}
+.cert-meta{
+  display:flex;align-items:center;justify-content:space-between;gap:0.5rem;
+  flex-wrap:wrap;
+}
+.cert-issuer-tag{
+  font-size:0.63rem;font-weight:600;color:var(--accent);
+  letter-spacing:0.08em;text-transform:uppercase;
+  display:flex;align-items:center;gap:0.35rem;
+}
+.cert-issuer-tag::before{
+  content:'';width:12px;height:1.5px;background:var(--accent);flex-shrink:0;
+}
+.cert-badge{
+  display:inline-flex;align-items:center;gap:0.28rem;
+  padding:0.2rem 0.65rem;border-radius:50px;flex-shrink:0;
+  background:rgba(94,255,194,0.08);border:1px solid rgba(94,255,194,0.25);
+  font-size:0.58rem;font-weight:700;color:var(--accent3);
+  letter-spacing:0.07em;text-transform:uppercase;
+}
+.cert-badge i{font-size:0.56rem}
+
+/* ── CERT LIGHTBOX POPUP ── */
+.cert-lightbox{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  padding:1.5rem;
+  background:rgba(2,5,12,0);
+  backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);
+  pointer-events:none;
+  transition:background 0.35s ease, backdrop-filter 0.35s ease;
+}
+.cert-lightbox.open{
+  background:rgba(2,5,12,0.88);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  pointer-events:all;
+}
+.cert-lb-panel{
+  position:relative;
+  width:100%;
+  max-width:820px;
+  background:var(--card);
+  border:1px solid rgba(232,160,69,0.25);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  box-shadow:0 40px 120px rgba(0,0,0,0.7),0 0 0 1px rgba(232,160,69,0.1);
+  opacity:0;
+  transform:scale(0.88) translateY(24px);
+  transition:opacity 0.38s cubic-bezier(0.22,1,0.36,1),
+             transform 0.38s cubic-bezier(0.22,1,0.36,1);
+}
+.cert-lightbox.open .cert-lb-panel{
+  opacity:1;transform:scale(1) translateY(0);
+}
+/* Close button */
+.cert-lb-close{
+  position:absolute;top:14px;right:14px;z-index:10;
+  width:38px;height:38px;border-radius:50%;
+  background:rgba(6,10,18,0.75);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.1);
+  color:var(--text);font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background 0.2s,transform 0.2s,color 0.2s;
+}
+.cert-lb-close:hover{
+  background:rgba(232,160,69,0.2);color:var(--accent);
+  transform:rotate(90deg) scale(1.1);
+}
+/* Image in popup */
+.cert-lb-img-wrap{
+  width:100%;
+  background:#07101e;
+  display:flex;align-items:center;justify-content:center;
+  padding:1.8rem 2rem 1.4rem;
+}
+.cert-lb-img-wrap img{
+  width:100%;max-height:420px;
+  object-fit:contain;
+  border-radius:12px;
+  box-shadow:0 12px 45px rgba(0,0,0,0.5);
+  display:block;
+}
+/* Info strip */
+.cert-lb-info{
+  padding:1.2rem 2rem 1.6rem;
+  border-top:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(232,160,69,0.05),transparent 60%);
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:1.2rem;flex-wrap:wrap;
+}
+.cert-lb-text{}
+.cert-lb-name{
+  font-family:'Bricolage Grotesque',system-ui,sans-serif;
+  font-weight:800;font-size:1.15rem;color:var(--text);
+  line-height:1.25;margin-bottom:0.35rem;
+}
+.cert-lb-issuer{
+  font-size:0.72rem;font-weight:700;color:var(--accent);
+  letter-spacing:0.1em;text-transform:uppercase;
+  display:flex;align-items:center;gap:0.4rem;margin-bottom:0.5rem;
+}
+.cert-lb-issuer::before{
+  content:'';width:16px;height:1.5px;background:var(--accent);flex-shrink:0;
+}
+.cert-lb-desc{
+  font-size:0.83rem;color:var(--muted);line-height:1.7;max-width:500px;
+}
+.cert-lb-badge{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  padding:0.45rem 1.1rem;border-radius:50px;flex-shrink:0;align-self:flex-start;
+  background:rgba(94,255,194,0.08);border:1px solid rgba(94,255,194,0.3);
+  font-size:0.68rem;font-weight:700;color:var(--accent3);
+  letter-spacing:0.09em;text-transform:uppercase;
+  margin-top:0.2rem;
+}
+.cert-lb-badge i{font-size:0.65rem}
+
+/* Entrance animation when clicking card */
+@keyframes cert-pop{
+  0%  {transform:scale(1)}
+  40% {transform:scale(0.95)}
+  70% {transform:scale(1.03)}
+  100%{transform:scale(1)}
+}
+.cert-card.cert-clicking{
+  animation:cert-pop 0.35s cubic-bezier(0.34,1.25,0.64,1);
+}
+
+/* Mobile adjustments */
+@media(max-width:640px){
+  .cert-card{width:240px}
+  .cert-slider-section{padding:4rem 0}
+  .cert-track-outer::before,.cert-track-outer::after{width:50px}
+  .cert-name{font-size:0.78rem}
+  .cert-lb-img-wrap{padding:1.2rem}
+  .cert-lb-info{padding:1rem 1.2rem 1.4rem;flex-direction:column}
+  .cert-lb-name{font-size:1rem}
+}
+@media(max-width:480px){
+  .cert-lightbox{padding:0.8rem}
+  .cert-lb-panel{border-radius:var(--r)}
+}
+
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:1024px){
   .hero{grid-template-columns:1fr;padding-top:8rem;text-align:center}
@@ -1600,6 +1848,7 @@ footer{padding:3rem 5vw}
       <a href="#experience">Experience</a>
       <a href="#gallery">Gallery</a>
       <a href="#skills">Skills</a>
+      <a href="#certifications">Certs</a>
       <a href="#industries">Industries</a>
       <a href="#achievements">Wins</a>
       <a href="#testimonials">Testimonials</a>
@@ -1619,6 +1868,7 @@ footer{padding:3rem 5vw}
     <a href="#experience" onclick="closeMobile()">Experience</a>
     <a href="#gallery" onclick="closeMobile()">Gallery</a>
     <a href="#skills" onclick="closeMobile()">Skills</a>
+    <a href="#certifications" onclick="closeMobile()">Certs</a>
     <a href="#industries" onclick="closeMobile()">Industries</a>
     <a href="#achievements" onclick="closeMobile()">Wins</a>
     <a href="#testimonials" onclick="closeMobile()">Testimonials</a>
@@ -2131,6 +2381,266 @@ footer{padding:3rem 5vw}
   </div>
 </section>
 
+<!-- ════ CERTIFICATIONS SLIDER ════ -->
+<div class="divider"></div>
+<section class="cert-slider-section" id="certifications">
+  <div class="cert-slider-header fade-up">
+    <div class="section-label">Credentials &amp; Certifications</div>
+    <h2 class="section-title">Certified &amp; <span style="color:var(--accent)">Credentialed</span></h2>
+    <p class="section-sub" style="margin:0 auto 0">Continuous learning across sales, technology, and leadership domains.</p>
+  </div>
+
+  <div class="cert-track-outer">
+    <div class="cert-track" id="certTrack">
+
+      <!-- ── CARD 1 ── -->
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate1.png"
+        data-name="Cybersecurity Sales Professional"
+        data-issuer="EC-Council"
+        data-desc="Certified in selling cybersecurity solutions to enterprise and mid-market clients. Covers security product positioning, objection handling, and B2B sales strategies specific to the cybersecurity domain.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap">
+          <img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate1.png" alt="Cybersecurity Sales Professional" loading="lazy">
+        </div>
+        <div class="cert-body">
+          <div class="cert-name">Cybersecurity Sales Professional</div>
+          <div class="cert-meta">
+            <span class="cert-issuer-tag">EC-Council</span>
+            <span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CARD 2 ── -->
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate2.jpeg"
+        data-name="Inbound Sales Certification"
+        data-issuer="HubSpot Academy"
+        data-desc="Certified in modern inbound sales methodology — from identifying potential buyers to lead nurturing, consultative selling, and closing. Covers HubSpot CRM workflows and sales funnel optimisation.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap">
+          <img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate2.jpeg" alt="Inbound Sales Certification" loading="lazy">
+        </div>
+        <div class="cert-body">
+          <div class="cert-name">Inbound Sales Certification</div>
+          <div class="cert-meta">
+            <span class="cert-issuer-tag">HubSpot Academy</span>
+            <span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CARD 3 ── -->
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate3.jpg"
+        data-name="B2B Sales Strategy &amp; Account Management"
+        data-issuer="LinkedIn Learning"
+        data-desc="Advanced certification in enterprise account planning, pipeline management, and long-term B2B client retention. Covers strategic account reviews, stakeholder mapping, and revenue forecasting techniques.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap">
+          <img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate3.jpg" alt="B2B Sales Strategy" loading="lazy">
+        </div>
+        <div class="cert-body">
+          <div class="cert-name">B2B Sales Strategy &amp; Account Management</div>
+          <div class="cert-meta">
+            <span class="cert-issuer-tag">LinkedIn Learning</span>
+            <span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CARD 4 ── -->
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate4.jpg"
+        data-name="Digital Marketing &amp; E-Commerce"
+        data-issuer="Google"
+        data-desc="Google-certified in digital marketing fundamentals, e-commerce strategies, SEO, paid advertising, and analytics. Applies digital-first approaches to modern B2B and B2C sales outreach and lead generation.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap">
+          <img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate4.jpg" alt="Digital Marketing" loading="lazy">
+        </div>
+        <div class="cert-body">
+          <div class="cert-name">Digital Marketing &amp; E-Commerce</div>
+          <div class="cert-meta">
+            <span class="cert-issuer-tag">Google</span>
+            <span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CARD 5 ── -->
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate5.jpg"
+        data-name="Pharmaceutical Marketing &amp; Sales Management"
+        data-issuer="APMI India"
+        data-desc="Certified in pharma sales territory management, regulatory compliance, doctor engagement strategies, and distributor relationship building. Applied across Kerala territory during the Capital Pharma tenure.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap">
+          <img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate5.jpg" alt="Pharmaceutical Marketing" loading="lazy">
+        </div>
+        <div class="cert-body">
+          <div class="cert-name">Pharmaceutical Marketing &amp; Sales Management</div>
+          <div class="cert-meta">
+            <span class="cert-issuer-tag">APMI India</span>
+            <span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CARD 6 ── -->
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate6.jpg"
+        data-name="AI for Sales &amp; Prompt Engineering"
+        data-issuer="Coursera · DeepLearning.AI"
+        data-desc="Certified in leveraging AI and prompt engineering for sales automation, prospecting, personalised outreach, and pipeline intelligence. Integrates AI tools into day-to-day sales workflows for faster deal velocity.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap">
+          <img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate6.jpg" alt="AI for Sales" loading="lazy">
+        </div>
+        <div class="cert-body">
+          <div class="cert-name">AI for Sales &amp; Prompt Engineering</div>
+          <div class="cert-meta">
+            <span class="cert-issuer-tag">Coursera · DeepLearning.AI</span>
+            <span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CARD 7 ── -->
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate7.jpg"
+        data-name="International Sales &amp; Export Management"
+        data-issuer="Udemy"
+        data-desc="Certified in cross-border sales strategies, UAE market entry dynamics, export documentation, and international client negotiation. Directly applied during the Barclays International tenure across Dubai and Abu Dhabi.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap">
+          <img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate7.jpg" alt="International Sales" loading="lazy">
+        </div>
+        <div class="cert-body">
+          <div class="cert-name">International Sales &amp; Export Management</div>
+          <div class="cert-meta">
+            <span class="cert-issuer-tag">Udemy</span>
+            <span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CARD 8 ── -->
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate8.jpg"
+        data-name="High Impact Presentations &amp; Public Speaking"
+        data-issuer="Dale Carnegie"
+        data-desc="Certified in delivering high-impact executive presentations, corporate pitching, and persuasive public speaking. Applied across college tours, C-suite demos, and placement drives reaching 300+ students.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap">
+          <img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate8.jpg" alt="Public Speaking" loading="lazy">
+        </div>
+        <div class="cert-body">
+          <div class="cert-name">High Impact Presentations &amp; Public Speaking</div>
+          <div class="cert-meta">
+            <span class="cert-issuer-tag">Dale Carnegie</span>
+            <span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── DUPLICATE SET for seamless infinite loop ── -->
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate1.png"
+        data-name="Cybersecurity Sales Professional"
+        data-issuer="EC-Council"
+        data-desc="Certified in selling cybersecurity solutions to enterprise and mid-market clients. Covers security product positioning, objection handling, and B2B sales strategies specific to the cybersecurity domain.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate1.png" alt="Cybersecurity Sales Professional" loading="lazy"></div>
+        <div class="cert-body"><div class="cert-name">Cybersecurity Sales Professional</div><div class="cert-meta"><span class="cert-issuer-tag">EC-Council</span><span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span></div></div>
+      </div>
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate2.jpeg"
+        data-name="Inbound Sales Certification"
+        data-issuer="HubSpot Academy"
+        data-desc="Certified in modern inbound sales methodology — from identifying potential buyers to lead nurturing, consultative selling, and closing. Covers HubSpot CRM workflows and sales funnel optimisation.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate2.jpeg" alt="Inbound Sales Certification" loading="lazy"></div>
+        <div class="cert-body"><div class="cert-name">Inbound Sales Certification</div><div class="cert-meta"><span class="cert-issuer-tag">HubSpot Academy</span><span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span></div></div>
+      </div>
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate3.jpg"
+        data-name="B2B Sales Strategy &amp; Account Management"
+        data-issuer="LinkedIn Learning"
+        data-desc="Advanced certification in enterprise account planning, pipeline management, and long-term B2B client retention. Covers strategic account reviews, stakeholder mapping, and revenue forecasting techniques.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate3.jpg" alt="B2B Sales Strategy" loading="lazy"></div>
+        <div class="cert-body"><div class="cert-name">B2B Sales Strategy &amp; Account Management</div><div class="cert-meta"><span class="cert-issuer-tag">LinkedIn Learning</span><span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span></div></div>
+      </div>
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate4.jpg"
+        data-name="Digital Marketing &amp; E-Commerce"
+        data-issuer="Google"
+        data-desc="Google-certified in digital marketing fundamentals, e-commerce strategies, SEO, paid advertising, and analytics. Applies digital-first approaches to modern B2B and B2C sales outreach and lead generation.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate4.jpg" alt="Digital Marketing" loading="lazy"></div>
+        <div class="cert-body"><div class="cert-name">Digital Marketing &amp; E-Commerce</div><div class="cert-meta"><span class="cert-issuer-tag">Google</span><span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span></div></div>
+      </div>
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate5.jpg"
+        data-name="Pharmaceutical Marketing &amp; Sales Management"
+        data-issuer="APMI India"
+        data-desc="Certified in pharma sales territory management, regulatory compliance, doctor engagement strategies, and distributor relationship building. Applied across Kerala territory during the Capital Pharma tenure.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate5.jpg" alt="Pharmaceutical Marketing" loading="lazy"></div>
+        <div class="cert-body"><div class="cert-name">Pharmaceutical Marketing &amp; Sales Management</div><div class="cert-meta"><span class="cert-issuer-tag">APMI India</span><span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span></div></div>
+      </div>
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate6.jpg"
+        data-name="AI for Sales &amp; Prompt Engineering"
+        data-issuer="Coursera · DeepLearning.AI"
+        data-desc="Certified in leveraging AI and prompt engineering for sales automation, prospecting, personalised outreach, and pipeline intelligence. Integrates AI tools into day-to-day sales workflows for faster deal velocity.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate6.jpg" alt="AI for Sales" loading="lazy"></div>
+        <div class="cert-body"><div class="cert-name">AI for Sales &amp; Prompt Engineering</div><div class="cert-meta"><span class="cert-issuer-tag">Coursera · DeepLearning.AI</span><span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span></div></div>
+      </div>
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate7.jpg"
+        data-name="International Sales &amp; Export Management"
+        data-issuer="Udemy"
+        data-desc="Certified in cross-border sales strategies, UAE market entry dynamics, export documentation, and international client negotiation. Directly applied during the Barclays International tenure across Dubai and Abu Dhabi.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate7.jpg" alt="International Sales" loading="lazy"></div>
+        <div class="cert-body"><div class="cert-name">International Sales &amp; Export Management</div><div class="cert-meta"><span class="cert-issuer-tag">Udemy</span><span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span></div></div>
+      </div>
+      <div class="cert-card"
+        data-img="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate8.jpg"
+        data-name="High Impact Presentations &amp; Public Speaking"
+        data-issuer="Dale Carnegie"
+        data-desc="Certified in delivering high-impact executive presentations, corporate pitching, and persuasive public speaking. Applied across college tours, C-suite demos, and placement drives reaching 300+ students.">
+        <div class="cert-zoom-hint"><i class="fas fa-expand-alt"></i></div>
+        <div class="cert-img-wrap"><img src="https://raw.githubusercontent.com/Niyaj-sales/portfolio/refs/heads/main/images/certificates/certificate8.jpg" alt="Public Speaking" loading="lazy"></div>
+        <div class="cert-body"><div class="cert-name">High Impact Presentations &amp; Public Speaking</div><div class="cert-meta"><span class="cert-issuer-tag">Dale Carnegie</span><span class="cert-badge"><i class="fas fa-check-circle"></i> Verified</span></div></div>
+      </div>
+
+    </div><!-- /cert-track -->
+  </div><!-- /cert-track-outer -->
+</section>
+
+<!-- ════ CERT LIGHTBOX ════ -->
+<div class="cert-lightbox" id="certLightbox" role="dialog" aria-modal="true" aria-label="Certificate viewer">
+  <div class="cert-lb-panel" id="certLbPanel">
+    <button class="cert-lb-close" id="certLbClose" aria-label="Close"><i class="fas fa-times"></i></button>
+    <div class="cert-lb-img-wrap">
+      <img src="" alt="" id="certLbImg">
+    </div>
+    <div class="cert-lb-info">
+      <div class="cert-lb-text">
+        <div class="cert-lb-issuer" id="certLbIssuer"></div>
+        <div class="cert-lb-name" id="certLbName"></div>
+        <div class="cert-lb-desc" id="certLbDesc"></div>
+      </div>
+      <div class="cert-lb-badge"><i class="fas fa-certificate"></i> Certified</div>
+    </div>
+  </div>
+</div>
+
 <!-- ════ INDUSTRIES ════ -->
 <div class="divider"></div>
 <section id="industries">
@@ -2314,6 +2824,7 @@ footer{padding:3rem 5vw}
     <a href="#Experience">Experience</a>
     <a href="#gallery">Gallery</a>
     <a href="#skills">Skills</a>
+    <a href="#certifications">Certifications</a>
     <a href="#industries">Industries</a>
     <a href="#achievements">Wins</a>
     <a href="#testimonials">Testimonials</a>
@@ -3393,6 +3904,65 @@ window.addEventListener('load',()=>{
   if(hr){hr.style.cssText='opacity:0;transform:translateX(36px)';
   setTimeout(()=>{hr.style.cssText='opacity:1;transform:translateX(0);transition:opacity .9s cubic-bezier(0.22,1,0.36,1),transform .9s cubic-bezier(0.22,1,0.36,1)'},500)}
 });
+
+/* ── CERT LIGHTBOX ── */
+(function(){
+  const lb      = document.getElementById('certLightbox');
+  const lbImg   = document.getElementById('certLbImg');
+  const lbName  = document.getElementById('certLbName');
+  const lbIssuer= document.getElementById('certLbIssuer');
+  const lbDesc  = document.getElementById('certLbDesc');
+  const lbClose = document.getElementById('certLbClose');
+  const track   = document.getElementById('certTrack');
+
+  function openCertLb(card){
+    /* Brief press animation on the card */
+    card.classList.add('cert-clicking');
+    card.addEventListener('animationend',()=>card.classList.remove('cert-clicking'),{once:true});
+
+    /* Populate lightbox */
+    lbImg.src    = card.dataset.img    || '';
+    lbImg.alt    = card.dataset.name   || '';
+    lbName.textContent   = card.dataset.name   || '';
+    lbIssuer.textContent = card.dataset.issuer || '';
+    lbDesc.textContent   = card.dataset.desc   || '';
+
+    /* Pause slider while open */
+    track.style.animationPlayState = 'paused';
+
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCertLb(){
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+    track.style.animationPlayState = '';
+  }
+
+  /* Click any cert card */
+  document.querySelectorAll('.cert-card').forEach(card=>{
+    card.addEventListener('click', ()=>openCertLb(card));
+    /* Touch tap (prevent accidental open during scroll) */
+    let tStartX=0, tStartY=0;
+    card.addEventListener('touchstart',e=>{
+      tStartX=e.touches[0].clientX;
+      tStartY=e.touches[0].clientY;
+    },{passive:true});
+    card.addEventListener('touchend',e=>{
+      const dx=Math.abs(e.changedTouches[0].clientX-tStartX);
+      const dy=Math.abs(e.changedTouches[0].clientY-tStartY);
+      if(dx<8&&dy<8) openCertLb(card); /* only open on tap, not swipe */
+    },{passive:true});
+  });
+
+  /* Close triggers */
+  lbClose.addEventListener('click', closeCertLb);
+  lb.addEventListener('click', e=>{ if(e.target===lb) closeCertLb(); });
+  document.addEventListener('keydown', e=>{
+    if(lb.classList.contains('open') && e.key==='Escape') closeCertLb();
+  });
+})();
 </script>
 </body>
 </html>
