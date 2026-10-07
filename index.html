@@ -336,7 +336,7 @@ nav.scrolled{
   z-index:1;
 }
 .profile-img-wrap img{
-  width:100%;height:calc(100% - 72px);
+  width:100%;height:calc(100% - 92px);
   object-fit:cover;object-position:top;display:block;
   filter:contrast(1.04) saturate(1.1);
   transition:transform 0.6s cubic-bezier(0.22,1,0.36,1),filter 0.4s;
@@ -383,18 +383,18 @@ nav.scrolled{
   position:absolute;bottom:0;left:0;right:0;
   background:rgba(8,15,30,0.92);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  padding:0.9rem 1.3rem 1rem;
+  padding:0.9rem 1.3rem 1rem;text-align:center;
   border-top:1px solid rgba(255,255,255,0.08);
   z-index:2;
 }
 .profile-name-tag p{
   font-family:'Bricolage Grotesque',system-ui,sans-serif;
   font-weight:800;color:#fff;font-size:1rem;
-  line-height:1.2;margin-bottom:0.2rem;
+  line-height:1.2;margin-bottom:0.35rem;
 }
 .profile-name-tag span{
   font-size:0.68rem;color:var(--accent);
-  letter-spacing:0.12em;text-transform:uppercase;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;font-weight:700;display:block;line-height:1.6;
 }
 
 /* Contact Icon Buttons */
@@ -1907,7 +1907,7 @@ footer{padding:3rem 5vw}
         <img src="https://raw.githubusercontent.com/niyajsharif/portfolio/main/profile-pic.jpg" alt="Niyaj Sharif – Sales Engineer">
         <div class="profile-name-tag">
           <p>Niyaj Sharif</p>
-          <span>Chennai, India · Sales Engineer</span>
+          <span>Chennai, India<br>Sales Engineer</span>
         </div>
       </div>
      
